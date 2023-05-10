@@ -1,9 +1,28 @@
+import { useContext } from 'react';
 import loginImg from '../../assets/images/login/login.svg'
 import { AiOutlineGoogle,AiFillLinkedin } from "react-icons/ai";
 import { RiFacebookBoxFill} from "react-icons/ri";
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../authProvider/AuthProvider';
 
 const Login = () => {
+    const {signInUser} =useContext(AuthContext)
+    const handleSignIn = (event) => {
+        event.preventDefault()
+        const form =event.target;
+        const email =form.email.value;
+        const password=form.password.value;
+        signInUser(email,password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user);
+            alert('You sucessfully signIn')
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
+            console.log(errorMessage); 
+          });
+    }
     return (
         <div className="hero min-h-screen bg-white">
             <div className="hero-content flex-col lg:flex-row">
@@ -12,7 +31,7 @@ const Login = () => {
                 </div>
                 <div className="card  w-full max-w-sm shadow-2xl bg-base-100">
                     <div className="card-body">
-                        <form >
+                        <form onSubmit={handleSignIn}>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>
