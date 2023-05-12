@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom";
-import { BsSearch ,BsBag} from "react-icons/bs";
+import { BsSearch, BsBag } from "react-icons/bs";
 import logo from '../../../assets/icons/logo.svg'
+import { useContext } from "react";
+import { AuthContext } from "../../authProvider/AuthProvider";
 
 const Navigation = () => {
+    const { user, signOut, loading,setUser } = useContext(AuthContext);
+    if (loading) {
+        return <progress className="progress w-56"></progress>
+    }
+
+    const handleLogOut = () => {
+        signOut()
+            .then(() => {
+                alert('Sign Out Sucessfully')
+             return setUser(null)
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+
+    }
     return (
         <div className="navbar bg-base-100 mt-11">
             <div className="navbar-start">
@@ -26,11 +44,19 @@ const Navigation = () => {
                         <li>
                             <Link>Contact</Link>
                         </li>
+                        <div>
+                            {user ? <li>
+                                <Link>LogOut</Link> </li> :
+                                <li>
+                                    <Link to="/login">Login</Link>
+                                </li>
+                            }
+                        </div>
                     </ul>
                 </div>
-               <Link to="/">
-               <img src={logo} alt="" className="w-28 h-20"/>
-               </Link>
+                <Link to="/">
+                    <img src={logo} alt="" className="w-28 h-20" />
+                </Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -49,14 +75,24 @@ const Navigation = () => {
                     <li className="text-base font-normal font-serif">
                         <Link>Contact</Link>
                     </li>
+                    <div>
+                        {user ?
+                            <> <li className="text-base font-normal font-serif">
+                            <Link onClick={handleLogOut}>LogOut</Link>
+                        </li></> 
+                            :<><li className="text-base font-normal font-serif">
+                                <Link to="/login">Login</Link>
+                            </li> </>    
+                        }
+                    </div>
                 </ul>
             </div>
             <div className="navbar-end">
-            <div className="icons flex gap-4 me-4">
-                <BsBag></BsBag>
-                <BsSearch></BsSearch>
-            </div>
-            <button className="btn btn-outline btn-secondary">Appointment</button>
+                <div className="icons flex gap-4 me-4">
+                    <BsBag></BsBag>
+                    <BsSearch></BsSearch>
+                </div>
+                <button className="btn btn-outline btn-secondary">Appointment</button>
             </div>
         </div>
     );

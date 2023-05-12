@@ -4,12 +4,12 @@ import ServiceCard from "./ServiceCard";
 const Service = () => {
     const [services, setServices] = useState([])
     useState(() => {
-        fetch('service.json')
+        fetch('http://localhost:5000/details')
             .then(res => res.json())
             .then(data => setServices(data))
     }, [])
 
-console.log(services);
+
     return (
         <div>
             <div className="service-header mx-auto text-center mt-32">

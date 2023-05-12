@@ -17,6 +17,7 @@ const Login = () => {
             const user = userCredential.user;
             console.log(user);
             alert('You sucessfully signIn')
+            form.reset()
           })
           .catch((error) => {
             const errorMessage = error.message;
